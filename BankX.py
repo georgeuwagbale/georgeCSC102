@@ -7,4 +7,4 @@ class XBank:
         self.theName = theName
         XBank.loggedinCounter +=1
 
-    def CollectMoney(self,amountto):
+ #   def CollectMoney(self,amountto):
