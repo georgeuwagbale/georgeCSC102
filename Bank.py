@@ -39,5 +39,5 @@ class Bank:
 
 
 George = Bank("George", 20120612030, 1234)
-print(George)
+
 
