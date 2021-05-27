@@ -25,7 +25,7 @@ class Bank:
         if request_pin == self.pin:
             self.account_balance -= withdrawal
             self.transaction.get("Debit").append(withdrawal)
-            return f"Debit of {withdrawal}; Account Balance: {self.account_balance}"
+            return f"Debit of {withdrawal}; Account Balance: ${self.account_balance}"
         else:
             return "Password is incorrect"
 
@@ -34,7 +34,7 @@ class Bank:
 
 
     def __str__(self):
-        return f"Name: {self.Name}; Account Number: {self.Account_number}; Account Balance: {self.account_balance}"
+        return f"Name: {self.Name}; Account Number: {self.Account_number}; Account Balance: ${self.account_balance}"
 
 
 
