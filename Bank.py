@@ -5,8 +5,8 @@ class Bank:
         self.pin = pin
         self.account_balance = 0
         self.transaction = {
-            "Debit":[],
-            "Credit":[]
+            "Debit": [],
+            "Credit": []
         }
 
     def change_pin(self, new_pin):
@@ -30,15 +30,28 @@ class Bank:
             return "Password is incorrect"
 
 
-    #def statement_of_account(self):
+    def statement_of_account(self):
+        for transactions in self.transaction.keys():
+            print(self.transaction.get(transactions))
 
+    def function(self):
+        print("\t\t\tWELCOME TO BANK-X \n")
+        print("Enter '1' to Deposit \n Enter '2' to Withdrawal \n Enter '3' to Change of Pin")
+        response = int(input("What transaction do you want to perform"))
+
+        if response == 1:
+            self.deposit()
+        elif response == 2:
+            self.withdrawal()
+        elif  response == 3:
+            self.change_pin()
 
     def __str__(self):
         return f"Name: {self.Name}; Account Number: {self.Account_number}; Account Balance: ${self.account_balance}"
 
 
 George = Bank("George", 20120612030, 1234)
-George.deposit()
+George.function()
 
 
 
