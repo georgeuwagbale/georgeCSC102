@@ -57,6 +57,9 @@ class Student:
          elif number % 2 == 1:
             return f"{number} is odd"
 
+     def __str__(self):
+         return f"""Name: {self.name} Matric NO: {self.matricno} \nSex: {self.sex} Age: {self.age} \nCSC102 Examination Score: {self.csc102examscore} """
+
 
 
 
@@ -72,3 +75,4 @@ print(Student.registered_courses())
 Student.PAUNanthem()
 print(Student.even_odd(5))
 print(studendt1.age_above_16())
+print(studendt1)
