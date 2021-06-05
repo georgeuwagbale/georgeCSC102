@@ -1,6 +1,7 @@
-class Bank:
-    def __init__(self, name, account_number, pin):
+class Customer:
+    def __init__(self, name, account_number, pin, *bvn):
         self.name = name
+        self.bvn = bvn
         self.account_number = account_number
         self.pin = pin
         self.account_type = "dollar"
@@ -9,13 +10,45 @@ class Bank:
             "Debit": [],
             "Credit": []
         }
+        self.client = self.database_connection()
 
     def change_pin(self):
         old_pin = int(input("Input old pin: "))
+        retrieved_pin = self.client.find_one({"name": self.name, "bvn": self.bvn})
+        #old_pin_from_database = retrieved_pin.get("pin")
+        print(type(retrieved_pin))
         if old_pin == self.pin:
             new_pin = int(input("Input new pin: "))
             self.pin = new_pin
             print( "You have successfully changed your password")
+
+    def database_connection(self):
+        import pymongo
+        client = pymongo.MongoClient("mongodb://localhost:27017/")
+        db = client.get_database("Bank")
+        collection = db.get_collection("customers")
+        match = collection.find_one({"name": self.name, "account number": self.account_number,"account type": self.account_type})
+        if match:
+            return collection
+
+        else:
+
+            if self.bvn:
+                data = {
+                    "name": self.name, "account number": self.account_number,
+                    "pin": self.pin,
+                    "account type": self.account_type,
+                    "bvn": self.bvn,
+                    "account balance": self.account_balance,
+                    "transactions": self.transaction
+                    }
+
+                information = collection.insert_one(data)
+                return information
+
+            else:
+                self.bvn = Customer.bvn_generator()
+                return self.database_connection()
 
     def deposit(self):
         balance = float(input("How much do you want to deposit: "))
@@ -100,9 +133,21 @@ class Bank:
     def __str__(self):
         return f"Name: {self.name}; Account Number: {self.account_number}; Account Balance: ${self.account_balance}"
 
+    @classmethod
+    def bvn_generator(cls):
+        from random import randrange
+        bvn = randrange(1000,1000000)
+        return bvn
 
-George = Bank("George", 20120612030, 1234)
+    def login (self):
+        account_number = int(input("Input your account number: "))
+        bvn = int(input("Input"))
+
+
+
+
+
+George = Customer("Moses", 20120612060, 1034,)
 George.function()
-
 
 
