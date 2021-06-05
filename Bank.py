@@ -14,47 +14,24 @@ class Customer:
 
     def change_pin(self):
         old_pin = int(input("Input old pin: "))
-        retrieved_pin = self.client.find_one({"name": self.name, "bvn": self.bvn})
-        #old_pin_from_database = retrieved_pin.get("pin")
-        print(type(retrieved_pin))
-        if old_pin == self.pin:
-            new_pin = int(input("Input new pin: "))
-            self.pin = new_pin
-            print( "You have successfully changed your password")
-
-    def database_connection(self):
-        import pymongo
-        client = pymongo.MongoClient("mongodb://localhost:27017/")
-        db = client.get_database("Bank")
-        collection = db.get_collection("customers")
-        match = collection.find_one({"name": self.name, "account number": self.account_number,"account type": self.account_type})
+        match = self.client.find_one({"name": self.name, "account number": self.account_number})
         if match:
-            return collection
-
-        else:
-
-            if self.bvn:
-                data = {
-                    "name": self.name, "account number": self.account_number,
-                    "pin": self.pin,
-                    "account type": self.account_type,
-                    "bvn": self.bvn,
-                    "account balance": self.account_balance,
-                    "transactions": self.transaction
-                    }
-
-                information = collection.insert_one(data)
-                return information
-
-            else:
-                self.bvn = Customer.bvn_generator()
-                return self.database_connection()
+            retrieved_pin = match.get("pin")
+            trial = 3
+            while trial != 0:
+                if old_pin == retrieved_pin:
+                    new_pin = int(input("Input new pin: "))
+                    self.pin = self.client.update_one({"name": self.name, "account number": self.account_number}, {"$set": {"pin": new_pin}})
+                    print("You have successfully changed your password")
+                    break
+                else:
+                    print("Incorrect password, try again")
+                trial -= 1
 
     def deposit(self):
         balance = float(input("How much do you want to deposit: "))
         self.account_balance += balance
         self.transaction.get("Credit").append(balance)
-        #return f"Account Balance: {self.account_balance}"
         self.alert(message="credit", transaction_amount=balance)
 
     def withdrawal(self):
@@ -65,7 +42,6 @@ class Customer:
                 withdrawal = float(input("Pin correct.\nHow much do you want to withdrawal: "))
                 self.account_balance -= withdrawal
                 self.transaction.get("Debit").append(withdrawal)
-                #return f"Debit of {withdrawal}; Account Balance: ${self.account_balance}"
                 self.alert(message="debit", transaction_amount=withdrawal)
                 break
             else:
@@ -78,19 +54,13 @@ class Customer:
         bank = input("Recipient's bank: ")
         pin = int(input("Input your pin to verify: "))
         trial = 3
-        while trial != 0 :
+        while trial != 0:
             if pin == self.pin:
                 print("Transaction successful")
                 self.alert("debit", amount)
             else:
                 print("Incorrect pin, try again")
             trial -=1
-
-
-
-    def statement_of_account(self):
-        for transactions in self.transaction.keys():
-            print(self.transaction.get(transactions))
 
     def function(self):
         print("\t\t\tWELCOME TO BANK-X \n")
@@ -103,7 +73,7 @@ class Customer:
                 return self.deposit()
             elif response == 2:
                 return self.withdrawal()
-            elif  response == 3:
+            elif response == 3:
                 return self.change_pin()
             elif response == 4:
                 return self.statement_of_account()
@@ -111,10 +81,8 @@ class Customer:
                 return self.profile()
             elif response == 6:
                 return self.transfer()
-
             else:
                 print("Input out of range")
-
         except ValueError:
             print("Invalid input")
 
@@ -122,9 +90,9 @@ class Customer:
         revised_account_number = str(self.account_number)
         coded_account_number = revised_account_number[0:3] + "****" + revised_account_number[8:]
         if message == "debit":
-            print(f"Debit\n Amount: {transaction_amount} \n Account: {coded_account_number} \n Balance: ${self.account_balance}")
+            print(f"\n\tDebit \nAmount: {transaction_amount} \nAccount: {coded_account_number} \nBalance: ${self.account_balance}")
         elif message == "credit":
-            print(f"Credit\n Amount: {transaction_amount} \n Account: {coded_account_number} \n Balance: ${self.account_balance}")
+            print(f"\n\tCredit \nAmount: {transaction_amount} \nAccount: {coded_account_number} \nBalance: ${self.account_balance}")
 
     def profile(self):
         print(f"\nName: {self.name} Account Number: {self.account_number}")
@@ -136,18 +104,15 @@ class Customer:
     @classmethod
     def bvn_generator(cls):
         from random import randrange
-        bvn = randrange(1000,1000000)
+        bvn = randrange(1000, 1000000)
         return bvn
 
-    def login (self):
-        account_number = int(input("Input your account number: "))
-        bvn = int(input("Input"))
 
 
 
 
 
-George = Customer("Moses", 20120612060, 1034,)
-George.function()
+#George = Customer("Moses", 20120612060, 1034,)
+#George.function()
 
 
