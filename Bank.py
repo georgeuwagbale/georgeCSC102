@@ -6,7 +6,7 @@ class Customer:
         self.pin = pin
         self.account_type = "dollar"
         self.client = database_connection
-        self.account_balance = self.client.find_one({"account number": self.account_number, "bvn": self.bvn}).get("account balance")
+        self.account_balance = 0
         self.transaction = {
             "Debit": [],
             "Credit": []
@@ -38,6 +38,7 @@ class Customer:
         balance = float(input("\nHow much do you want to deposit: "))
         #retrieved_balance = self.client.find_one({"account number": self.account_number, "bvn": self.bvn})
         #self.account_balance = retrieved_balance.get("account balance")
+        self.client.find_one({"account number": self.account_number, "bvn": self.bvn}).get("account balance")
         self.account_balance +=balance
         self.client.find_one_and_update({"account number": self.account_number, "bvn": self.bvn},
                                         {"$set": {"account balance": self.account_balance}})
@@ -54,6 +55,7 @@ class Customer:
             request_pin = int(input('Pin: '))
             if request_pin == self.pin:
                 withdrawal = float(input("Pin correct.\nHow much do you want to withdrawal: "))
+                self.client.find_one({"account number": self.account_number, "bvn": self.bvn}).get("account balance")
                 self.account_balance -= withdrawal
                 self.client.find_one_and_update({"account number": self.account_number, "bvn": self.bvn},
                                                 {"$set": {"account balance": self.account_balance}})
