@@ -92,7 +92,7 @@ class Customer:
 
     def function(self):
         print("\t\t\tWELCOME TO BANK-X \n")
-        print("Enter '1' to Deposit \n Enter '2' to Withdrawal \n Enter '3' to Change of Pin \n Enter '4' to get a statement of account")
+        print("Enter '1' to Deposit \n Enter '2' to Withdrawal \n Enter '3' to Change of Pin \n Enter '4' to tranfer")
         print("Enter '5' to view your profile")
         try:
             response = int(input("What transaction do you want to perform: "))
@@ -104,11 +104,12 @@ class Customer:
             elif response == 3:
                 return self.change_pin()
             elif response == 4:
-                return self.statement_of_account()
+                #return self.statement_of_account()
+                return self.transfer()
             elif response == 5:
                 return self.profile()
-            elif response == 6:
-                return self.transfer()
+            #elif response == 6:
+                #return self.transfer()
             else:
                 print("Input out of range")
         except ValueError:
