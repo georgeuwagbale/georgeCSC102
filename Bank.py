@@ -74,9 +74,9 @@ class Customer:
         amount = float(input("Amount: "))
         account = int(input("Recipient's Account number: "))
         bank = input("Recipient's bank: ")
-        pin = int(input("Input your pin to verify: "))
         trial = 3
         while trial != 0:
+            pin = int(input("Input your pin to verify: "))
             if pin == self.pin:
                 self.account_balance -= amount
                 self.client.find_one_and_update({"account number": self.account_number, "bvn": self.bvn},
@@ -86,7 +86,7 @@ class Customer:
             else:
                 print("Incorrect pin, try again")
             trial -= 1
-        response = input("\Do you want to perform another transaction (y/n): ")
+        response = input("\nDo you want to perform another transaction (y/n): ")
         if response == "y" or response == "Y":
             self.function()
 
@@ -138,13 +138,4 @@ class Customer:
         from random import randrange
         bvn = randrange(1000, 1000000)
         return bvn
-
-
-
-
-
-
-#George = Customer("Moses", 20120612060, 1034,)
-#George.function()
-
 
