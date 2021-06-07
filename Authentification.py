@@ -1,6 +1,7 @@
 import pymongo
 from Bank import Customer
 
+
 class Authentification:
 
     def __init__(self):
@@ -15,8 +16,6 @@ class Authentification:
 
     @classmethod
     def connection(cls):
-        #client = pymongo.MongoClient("mongodb://localhost:27017/")
-
         client = pymongo.MongoClient(
             "mongodb+srv://George:realghost16@cluster1.qvpms.mongodb.net/Bank?retryWrites=true&w=majority")
         db = client["Bank"]
@@ -65,4 +64,5 @@ class Authentification:
         print("Signed up successfully")
         self.login()
 
-test = Authentification().function()
+
+Authentification().function()

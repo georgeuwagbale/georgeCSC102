@@ -36,10 +36,10 @@ class Customer:
     def deposit(self):
         print("\n\t---DEPOSIT---")
         balance = float(input("\nHow much do you want to deposit: "))
-        #retrieved_balance = self.client.find_one({"account number": self.account_number, "bvn": self.bvn})
-        #self.account_balance = retrieved_balance.get("account balance")
+        self.account_balance = self.client.find_one({"account number": self.account_number,
+                                                     "bvn": self.bvn}).get("account balance")
         self.client.find_one({"account number": self.account_number, "bvn": self.bvn}).get("account balance")
-        self.account_balance +=balance
+        self.account_balance += balance
         self.client.find_one_and_update({"account number": self.account_number, "bvn": self.bvn},
                                         {"$set": {"account balance": self.account_balance}})
         self.transaction.get("Credit").append(balance)
@@ -55,7 +55,8 @@ class Customer:
             request_pin = int(input('Pin: '))
             if request_pin == self.pin:
                 withdrawal = float(input("Pin correct.\nHow much do you want to withdrawal: "))
-                self.client.find_one({"account number": self.account_number, "bvn": self.bvn}).get("account balance")
+                self.account_balance = self.client.find_one({"account number": self.account_number,
+                                                             "bvn": self.bvn}).get("account balance")
                 self.account_balance -= withdrawal
                 self.client.find_one_and_update({"account number": self.account_number, "bvn": self.bvn},
                                                 {"$set": {"account balance": self.account_balance}})
@@ -92,7 +93,7 @@ class Customer:
 
     def function(self):
         print("\t\t\tWELCOME TO BANK-X \n")
-        print("Enter '1' to Deposit \n Enter '2' to Withdrawal \n Enter '3' to Change of Pin \n Enter '4' to tranfer")
+        print("Enter '1' to Deposit \n Enter '2' to Withdrawal \n Enter '3' to Change of Pin \n Enter '4' to transfer")
         print("Enter '5' to view your profile")
         try:
             response = int(input("What transaction do you want to perform: "))
