@@ -125,6 +125,8 @@ class Customer:
             print(f"\n\tCredit \nAmount: {transaction_amount} \nAccount: {coded_account_number} \nBalance: ${self.account_balance}")
 
     def profile(self):
+        self.account_balance = self.client.find_one({"account number": self.account_number,
+                                                     "bvn": self.bvn}).get("account balance")
         print("\n\tProfile")
         print(f"\nName: {self.name} Account Number: {self.account_number}")
         print(f"Account Balance: ${self.account_balance} Account Type: {self.account_type}")
