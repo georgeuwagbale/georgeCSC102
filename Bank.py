@@ -120,7 +120,7 @@ class Customer:
         revised_account_number = str(self.account_number)
         coded_account_number = revised_account_number[0:3] + "****" + revised_account_number[8:]
         if message == "debit":
-            print(f"\n\tDebit \nAmount: {transaction_amount} \nAccount: {coded_account_number} \nBalance: ${self.account_balance}")
+            print(f"\n\tDebit \nAmount: {transaction_amount} \nAccount: {coded_account_number}  az\nBalance: ${self.account_balance}")
         elif message == "credit":
             print(f"\n\tCredit \nAmount: {transaction_amount} \nAccount: {coded_account_number} \nBalance: ${self.account_balance}")
 
