@@ -18,7 +18,7 @@ class Authentification:
     def connection(cls):
         client = pymongo.MongoClient("mongodb://localhost:27017/")
         #client = pymongo.MongoClient(
-            #"mongodb+srv://George:realghost16@cluster1.qvpms.mongodb.net/Bank?retryWrites=true&w=majority")
+        #    "mongodb+srv://George:realghost16@cluster1.qvpms.mongodb.net/Bank?retryWrites=true&w=majority")
         db = client["Bank"]
         collection = db["customers"]
         return collection
@@ -41,7 +41,7 @@ class Authentification:
                     print("Incorrect password, account number or pin")
         else:
             response = input("Account doesn't exist. \nConsider creating and account with BANK-X (y/n): ")
-            if response == "y" or response == "Y":
+            if response == "y" or response == "Y" or response == "yes" or response == "Yes" or response == "YES":
                 self.signup()
 
     def signup(self):
