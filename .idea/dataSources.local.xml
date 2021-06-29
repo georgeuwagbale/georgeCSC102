@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal" created-in="PY-211.7142.13">
+    <data-source name="Data@localhost" uuid="900fccfb-32a7-48d2-9734-311c74d50bdb">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MONGO" exact-version="0" />
+      <secret-storage>session</secret-storage>
+      <user-name>george</user-name>
+      <schema-mapping />
+    </data-source>
+    <data-source name="Test@localhost" uuid="d76a623c-75e6-42d2-8f70-6d848a0d45a9">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MONGO" exact-version="0" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>george</user-name>
+      <schema-mapping />
+    </data-source>
+  </component>
+</project>
