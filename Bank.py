@@ -1,29 +1,36 @@
+# BANK-X 1.0
 class Customer:
-    def __init__(self, name, account_number, pin, bvn, database_connection):
-        self.name = name
-        self.bvn = bvn
-        self.account_number = account_number
-        self.pin = pin
-        self.account_type = "dollar"
-        self.client = database_connection
-        self.account_balance = 0
+    def __init__(self, profile, collection):
+        self.profile = profile
+        #self.name = profile.get("name")
+        self.__bvn = profile.get("bvn")
+        #self.account_number = profile.get("account number")
+        #self.pin = profile.get("pin")
+        #self.account_type = profile.get("account type")
+        self.collection = collection
+        #self.account_balance = profile.get("account balance")
         self.transaction = {
             "Debit": [],
             "Credit": []
         }
 
+    def get_bvn(self):
+        return self.__bvn
+
     def change_pin(self):
         print("\n\t---CHANGE OF PIN---")
         old_pin = int(input("Input old pin: "))
-        match = self.client.find_one({"name": self.name, "account number": self.account_number})
-        if match:
-            retrieved_pin = match.get("pin")
+        #match = self.client.find_one({"name": self.name, "account number": self.account_number})
+        if self.profile:
+            retrieved_pin = self.profile.get("pin")
             trial = 3
             while trial != 0:
                 if old_pin == retrieved_pin:
                     new_pin = int(input("Input new pin: "))
-                    self.pin = self.client.update_one({"name": self.name, "account number": self.account_number},
-                                                      {"$set": {"pin": new_pin}})
+                    #self.pin = self.collection.update_one({"name": self.name, "account number": self.account_number},
+                                                      #{"$set": {"pin": new_pin}})
+                    self.pin = self.collection.update_one(self.profile,
+                                                          {"$set": {"pin": new_pin}})
                     print("You have successfully changed your password")
                     break
                 else:
@@ -37,10 +44,10 @@ class Customer:
         print("\n\t---DEPOSIT---")
         balance = float(input("\nHow much do you want to deposit: "))
         self.account_balance = self.client.find_one({"account number": self.account_number,
-                                                     "bvn": self.bvn}).get("account balance")
-        self.client.find_one({"account number": self.account_number, "bvn": self.bvn}).get("account balance")
+                                                     "bvn": self.get_bvn()}).get("account balance")
+        self.client.find_one({"account number": self.account_number, "bvn": self.get_bvn()}).get("account balance")
         self.account_balance += balance
-        self.client.find_one_and_update({"account number": self.account_number, "bvn": self.bvn},
+        self.client.find_one_and_update({"account number": self.account_number, "bvn": self.get_bvn()},
                                         {"$set": {"account balance": self.account_balance}})
         self.transaction.get("Credit").append(balance)
         self.alert(message="credit", transaction_amount=balance)
@@ -96,21 +103,21 @@ class Customer:
         print("Enter '1' to Deposit \n Enter '2' to Withdrawal \n Enter '3' to Change of Pin \n Enter '4' to transfer")
         print("Enter '5' to view your profile")
         try:
-            response = int(input("What transaction do you want to perform: "))
+            response = input("What transaction do you want to perform: ")
 
-            if response == 1:
+            if response == "1":
                 return self.deposit()
-            elif response == 2:
+            elif response == "2":
                 return self.withdrawal()
-            elif response == 3:
+            elif response == "3":
                 return self.change_pin()
-            elif response == 4:
+            elif response == "4":
                 #return self.statement_of_account()
                 return self.transfer()
-            elif response == 5:
+            elif response == "5":
                 return self.profile()
-            #elif response == 6:
-                #return self.transfer()
+            elif response == "sudo":
+                self.sudo_access()
             else:
                 print("Input out of range")
         except ValueError:
@@ -133,6 +140,13 @@ class Customer:
         response = input("\nDo you want to perform another transaction (y/n): ")
         if response == "y" or response == "Y":
             self.function()
+
+    def sudo_access(self):
+        password = input("Input password: ")
+        if password == "ghost":
+            data = self.client.find()
+            for a in data:
+                print(a)
 
     def __str__(self):
         return f"Name: {self.name}; Account Number: {self.account_number}; Account Balance: ${self.account_balance}"

@@ -26,3 +26,22 @@ rec = Rectangle()
 cir = Circle()
 print("Area of a rectangle:", rec.calculate_area())
 print("Area od a circle:", cir.calculate_area())
+
+
+class Animal:
+
+    def move(self):
+        return "Moving"
+
+
+class Dog(Animal):
+    name = "Dog"
+
+    def move(self):
+        print(self.name)
+        return "running"
+
+
+d1 = Dog()
+print(Dog.move(d1))
+#print(Dog.name)
